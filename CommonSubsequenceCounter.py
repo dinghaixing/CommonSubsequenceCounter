@@ -2,15 +2,15 @@
 
 class CommonSubsequenceCounter(object):
     def __init__(self, ngram=3, max_skip=2, min_count=5):
-        # paras
         self.ngram = ngram
         self.max_skip = max_skip
         self.min_count = min_count
 
-        # sequence tree
+        # tree structure: { 'word1':[count_num, children], 'word2': ... }
         self.tree = {}
             
     def counter(self, root, seg, curr_deep, target_deep):
+        ''' create the count tree. '''
         max_skip = self.max_skip if curr_deep != 0 else None
         if curr_deep == target_deep:
             for w in seg[0:max_skip]:
@@ -22,6 +22,7 @@ class CommonSubsequenceCounter(object):
                     self.counter(root[w][1], seg[i+1:], curr_deep+1, target_deep)
 
     def leaf_node_cleaner(self, root):
+        ''' deletes leaf nodes that occur less than min_count times. '''
         for w in list(root.keys()):
             if root[w][0] > self.min_count:
                 self.leaf_node_cleaner( root[w][1] )
@@ -29,19 +30,22 @@ class CommonSubsequenceCounter(object):
                 root.pop(w)
 
     def fit(self, sentences):
+        ''' the subsequence counter. '''
         for target_deep in range(self.ngram):
             for seg in sentences:
                 self.counter(self.tree, seg, 0, target_deep)
             self.leaf_node_cleaner(self.tree)
 
-    def traverser(self, root, chain=(), min_len=0):
+    def traverser(self, root, hist_seq=(), min_gram=0):
+        ''' traverse the tree to get sub_seq count results, that length big than min_gram '''
         result = []
-        for w, c in root.items():
-            new_chain = chain+(w,)
-            if len(new_chain) >= min_len:
-                result.append( (new_chain, c[0]) )
-            if c[1] != {}:
-                result += self.traverser(c[1], new_chain)
+        for w, data in root.items():
+        	# data[0]: count num, data[1]: children
+            curr_seq = hist_seq + (w,)
+            if len(curr_seq) >= min_gram:
+                result.append( (curr_seq, data[0]) )
+            if data[1] != {}:
+                result += self.traverser(data[1], curr_seq, min_gram)
         return result
 
 
