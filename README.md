@@ -11,7 +11,7 @@ sentences = [
 
 csc = CommonSubsequenceCounter(ngram=3, max_skip=2, min_count=1)
 csc.fit(sentences)
-result = csc.traverser(csc.tree, min_len=2)
+result = csc.traverser(csc.tree)
 
 for x in result:
   print(x)
