@@ -1,8 +1,8 @@
 # python3
 
 class CommonSubsequenceCounter(object):
-	""" 	
-  sentences = [
+	"""
+	sentences = [
 		['0', '1', '2', '3', '4', '5', '6', '7'],
 		['0', '1', '2', '3', '4', '5', '6', '7'],
 		['0', '1', '2', '3', '4', '5', '6', '7']
@@ -14,7 +14,7 @@ class CommonSubsequenceCounter(object):
 	for x in result:
 		print(x)
     
-  """
+	"""
 	def __init__(self, ngram=3, max_skip=2, min_count=5):
 		# paras
 		self.ngram = ngram
