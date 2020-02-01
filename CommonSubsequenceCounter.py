@@ -37,7 +37,7 @@ class CommonSubsequenceCounter(object):
             self.leaf_node_cleaner(self.tree)
 
     def traverser(self, root, hist_seq=(), min_gram=0):
-        ''' traverse the tree to get sub_seq count results, that length big than min_gram '''
+        ''' traverse the tree to get sub_seq count results (sub_seq length big than min_gram). '''
         result = []
         for w, data in root.items():
         	# data[0]: count num, data[1]: children
