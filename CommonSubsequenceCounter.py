@@ -13,21 +13,21 @@ class CommonSubsequenceCounter(object):
         ''' create the count tree. '''
         max_skip = self.max_skip if curr_deep != 0 else None
         if curr_deep == target_deep:
-            for w in seg[0:max_skip]:
-                root.setdefault( w, [0, {}] )
-                root[w][0] += 1
+            for word in seg[0:max_skip]:
+                root.setdefault( word, [0, {}] )
+                root[word][0] += 1
         else:
-            for i, w in enumerate(seg[0:max_skip]):
-                if w in root and root[w][0] > self.min_count:
-                    self.counter(root[w][1], seg[i+1:], curr_deep+1, target_deep)
+            for i, word in enumerate(seg[0:max_skip]):
+                if word in root and root[word][0] > self.min_count:
+                    self.counter(root[word][1], seg[i+1:], curr_deep+1, target_deep)
 
     def leaf_node_cleaner(self, root):
-        ''' deletes leaf nodes that occur less than min_count times. '''
-        for w in list(root.keys()):
-            if root[w][0] > self.min_count:
-                self.leaf_node_cleaner( root[w][1] )
+        ''' Deletes leaf nodes that occur less than min_count times. '''
+        for word in list(root.keys()):
+            if root[word][0] > self.min_count:
+                self.leaf_node_cleaner( root[word][1] )
             else:
-                root.pop(w)
+                root.pop(word)
 
     def fit(self, sentences):
         ''' the subsequence counter. '''
